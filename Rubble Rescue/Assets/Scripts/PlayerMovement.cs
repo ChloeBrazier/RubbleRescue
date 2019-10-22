@@ -76,6 +76,7 @@ public class PlayerMovement : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.Space))
         {
             playerBody.MovePosition(gameObject.transform.position + Vector3.up * jumpHeight * Time.deltaTime);
+            Debug.Log("jump");
             //must prevent infinite jumping later
         }
 
@@ -134,7 +135,7 @@ public class PlayerMovement : MonoBehaviour
 
                 //change movement stats
                 moveSpeed = 10.0f;
-                jumpHeight = 3.0f;
+                jumpHeight = 100f;
 
                 //change player sprite to medic sprite
                 playerRenderer.sprite = formSprites[0];
@@ -144,7 +145,7 @@ public class PlayerMovement : MonoBehaviour
 
                 //change movement stats
                 moveSpeed = 9.0f;
-                jumpHeight = 2.0f;
+                jumpHeight = 70f;
 
                 //change player sprite to hydro sprite
                 playerRenderer.sprite = formSprites[1];
@@ -154,7 +155,7 @@ public class PlayerMovement : MonoBehaviour
 
                 //change movement stats
                 moveSpeed = 5.0f;
-                jumpHeight = 1.2f;
+                jumpHeight = 40f;
 
                 //change player sprite to buster sprite
                 playerRenderer.sprite = formSprites[2];
