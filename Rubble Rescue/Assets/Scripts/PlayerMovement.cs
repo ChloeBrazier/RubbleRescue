@@ -117,12 +117,6 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private void FixedUpdate()
-    {
-        //apply constant downward force to simulate gravity
-        //playerBody.MovePosition(gameObject.transform.position + Vector3.down * 10 * Time.deltaTime);
-    }
-
     /// <summary>
     /// method that changes player forms by switching sprites and setting player stats
     /// </summary>
