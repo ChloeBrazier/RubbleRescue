@@ -17,6 +17,9 @@ public class PlayerPhysics : MonoBehaviour
     [SerializeField]
     private float minGroundNormalY;
 
+    //protected fields for movement input from outside classes
+    protected Vector2 targetVelocity;
+
     //protected fields to check if the player is grounded
     protected bool isGrounded;
     protected Vector2 groundNormal;
@@ -38,31 +41,44 @@ public class PlayerPhysics : MonoBehaviour
         playerBody = GetComponent<Rigidbody2D>();
     }
 
-    // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
         //initialize gravity with a value of 1
-        gravityScale = 1f;
+        gravityScale = 2f;
 
         //initialize ground normals
         minGroundNormalY = 0.65f;
-
-        //set contact filter to ignore triggers
-        contactFilter.useTriggers = false;
-
-        //set contact filter to use the project's physics2D settings for collision checking
-        contactFilter.SetLayerMask(Physics2D.GetLayerCollisionMask(gameObject.layer));
-        contactFilter.useLayerMask = true;
 
         //initialize hit buffer array and buffer list
         hitBuffer = new RaycastHit2D[16];
         bufferList = new List<RaycastHit2D>(16);
     }
 
+    // Start is called before the first frame update
+    void Start()
+    {
+        //set contact filter to ignore triggers
+        contactFilter.useTriggers = false;
+
+        //set contact filter to use the project's physics2D settings for collision checking
+        contactFilter.SetLayerMask(Physics2D.GetLayerCollisionMask(gameObject.layer));
+        contactFilter.useLayerMask = true;
+    }
+
     // Update is called once per frame
     void Update()
     {
-        
+        //reset velocity before calculation
+        targetVelocity = Vector2.zero;
+        ComputeVelocity();   
+    }
+
+    /// <summary>
+    /// overridden method used to calculate velocity
+    /// </summary>
+    protected virtual void ComputeVelocity()
+    {
+
     }
 
     private void FixedUpdate()
@@ -70,16 +86,28 @@ public class PlayerPhysics : MonoBehaviour
         //simulate gravity by moving the player down
         velocity += gravityScale * Physics2D.gravity * Time.deltaTime;
 
+        //move the player horizontally based on input
+        velocity.x = targetVelocity.x;
+
         //set isGrounded to false before checking for collisions
         isGrounded = false;
 
         //change the player's position based on velocity
         Vector2 position = velocity * Time.deltaTime;
 
-        //calculate downward movement
-        Vector2 move = Vector2.up * position.y;
+        //store movement along the ground (vector perpencidular to ground normal)
+        Vector2 groundMovement = new Vector2(groundNormal.y, -groundNormal.x);
 
-        //apply movement to player rigidbody
+        //move player along the ground based on the ground movement vector
+        Vector2 move = groundMovement * position.x;
+
+        //apply x-axis movement to player rigidbody
+        Movement(move, false);
+
+        //calculate downward movement
+        move = Vector2.up * position.y;
+
+        //apply y-axis movement to player rigidbody
         Movement(move, true);
     }
 
@@ -87,7 +115,7 @@ public class PlayerPhysics : MonoBehaviour
     /// method that applies custom physics to the player's rigidbody
     /// </summary>
     /// <param name="move"> the vector2 that represents the direction of movement </param>
-    /// <param name="verticalMovement"></param>
+    /// <param name="verticalMovement"> bool to determine if movement is occuring on the y-axis </param>
     void Movement(Vector2 move, bool verticalMovement)
     {
         //save the magnitude of the distance of player movement for collision checking

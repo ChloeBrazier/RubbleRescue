@@ -7,153 +7,51 @@ using UnityEngine;
  *October 20 2019
  */
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : PlayerPhysics
 {
-    //enum for player states
-    enum SuitMode
-    {
-        Medic,
-        Hydro,
-        Buster
-    }
-
-    //potential vectors for movement
-    /*
-    private Vector3 position;
-    private Vector3 direction;
-    private Vector3 velocity;
-    private Vector3 acceleration;
-    */
-
-    //fields for movespeed and jumpheight
-    private float moveSpeed;
-    private float jumpHeight;
-
-    //fields for object's rigidbody and spriterenderer
-    private Rigidbody2D playerBody;
-    private SpriteRenderer playerRenderer;
-
-    //field for current suit mode
-    private SuitMode currentMode;
-
-    //field for an array of player sprites
-    [SerializeField]
-    private Sprite[] formSprites;
+    
+    //fields for max movespeed and jump takeoff speed
+    public float moveSpeed = 7;
+    public float jumpStartSpeed = 7;
 
     // Start is called before the first frame update
     void Start()
     {
         //initialize player position
         gameObject.transform.position = Vector2.zero;
-
-        //get player rigidbody and sprite renderer
-        playerBody = gameObject.GetComponent<Rigidbody2D>();
-        playerRenderer = gameObject.GetComponent<SpriteRenderer>();
-
-        //set suit mode to medic by default
-        currentMode = SuitMode.Medic;
-
-        //initialize stats with form change method
-        FormChange();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        //single-press movement
-
-        //face left
-        if(Input.GetKeyDown(KeyCode.A))
-        {
-            playerRenderer.flipX = true;
-        }
-        //face right
-        if(Input.GetKeyDown(KeyCode.D))
-        {
-            playerRenderer.flipX = false;
-        }
-        //jump
-        if(Input.GetKeyDown(KeyCode.Space))
-        {
-            playerBody.MovePosition(gameObject.transform.position + Vector3.up * jumpHeight * Time.deltaTime);
-            Debug.Log("jump");
-            //must prevent infinite jumping later
-        }
-
-
-        //continuous movement
-
-        //move left
-        if(Input.GetKey(KeyCode.A))
-        {
-            playerBody.MovePosition(gameObject.transform.position + Vector3.left * moveSpeed * Time.deltaTime);
-        }
-        //move right
-        if(Input.GetKey(KeyCode.D))
-        {
-            playerBody.MovePosition(gameObject.transform.position + Vector3.right * moveSpeed * Time.deltaTime);
-        }
-
-
-        //form changes
-
-        //change to medic mode
-        if(Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            currentMode = SuitMode.Medic;
-            FormChange();
-        }
-        //change to hydro mode
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            currentMode = SuitMode.Hydro;
-            FormChange();
-        }
-        //change to buster mode
-        if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            currentMode = SuitMode.Buster;
-            FormChange();
-        }
     }
 
     /// <summary>
-    /// method that changes player forms by switching sprites and setting player stats
+    /// calculates player's velocity during the current frame
     /// </summary>
-    private void FormChange()
+    protected override void ComputeVelocity()
     {
-        //change stats based on current form
-        switch (currentMode)
+        //create new vector for movement and set it to zero by default
+        Vector2 move = Vector2.zero;
+
+        //get horizontal movement input
+        move.x = Input.GetAxis("Horizontal");
+
+        //debug GetAxis for better understanding of what it does
+        Debug.Log("move.x is " + move.x);
+
+        //allow the player to jump if they are on the ground
+        if(Input.GetButtonDown("Jump") && isGrounded == true)
         {
-            case SuitMode.Medic:
-
-                //change movement stats
-                moveSpeed = 10.0f;
-                jumpHeight = 100f;
-
-                //change player sprite to medic sprite
-                playerRenderer.sprite = formSprites[0];
-                break;
-
-            case SuitMode.Hydro:
-
-                //change movement stats
-                moveSpeed = 9.0f;
-                jumpHeight = 70f;
-
-                //change player sprite to hydro sprite
-                playerRenderer.sprite = formSprites[1];
-                break;
-
-            case SuitMode.Buster:
-
-                //change movement stats
-                moveSpeed = 5.0f;
-                jumpHeight = 40f;
-
-                //change player sprite to buster sprite
-                playerRenderer.sprite = formSprites[2];
-                break;
+            //start the player's jump
+            velocity.y = jumpStartSpeed;
         }
+        else if(Input.GetButtonUp("Jump"))
+        {
+            //stop the jump if the jump key/button is released
+            if(velocity.y > 0)
+            {
+                //reduce upward velocity when the player lets go of the jump button
+                velocity.y *= 0.5f;
+            }
+        }
+
+        //move the player horizontally based on max movespeed
+        targetVelocity = move * moveSpeed;
     }
 }

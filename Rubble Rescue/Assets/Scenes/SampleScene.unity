@@ -237,10 +237,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e063b4ee0d81e2b44a6898b4aba8da1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  formSprites:
-  - {fileID: -1155603599314371108, guid: db2ea737c41204f4aab4ea1f51880841, type: 3}
-  - {fileID: 9014615767848828814, guid: db2ea737c41204f4aab4ea1f51880841, type: 3}
-  - {fileID: 172468102290716699, guid: db2ea737c41204f4aab4ea1f51880841, type: 3}
+  gravityScale: 0
+  minGroundNormalY: 0
+  moveSpeed: 7
+  jumpStartSpeed: 7
 --- !u!61 &312086843
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -276,11 +276,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 312086838}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ea78a1f52429651429956c17ff308fc4, type: 3}
+  m_Script: {fileID: 11500000, guid: 2eb1277795e282044b7c8cd9339b7670, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gravityScale: 0
-  minGroundNormalY: 0
+  formSprites:
+  - {fileID: -1155603599314371108, guid: db2ea737c41204f4aab4ea1f51880841, type: 3}
+  - {fileID: 9014615767848828814, guid: db2ea737c41204f4aab4ea1f51880841, type: 3}
+  - {fileID: 172468102290716699, guid: db2ea737c41204f4aab4ea1f51880841, type: 3}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
