@@ -44,7 +44,7 @@ public class PlayerPhysics : MonoBehaviour
     private void Awake()
     {
         //initialize gravity with a value of 1
-        gravityScale = 2f;
+        gravityScale = 6f;
 
         //initialize ground normals
         minGroundNormalY = 0.65f;
@@ -83,7 +83,7 @@ public class PlayerPhysics : MonoBehaviour
 
     private void FixedUpdate()
     {
-        //simulate gravity by moving the player down
+        //simulate gravity by moving the player down based on gravity scale
         velocity += gravityScale * Physics2D.gravity * Time.deltaTime;
 
         //move the player horizontally based on input

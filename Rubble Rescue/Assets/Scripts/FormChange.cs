@@ -43,21 +43,6 @@ public class FormChange : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //single-press movement
-
-        //face left
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            playerRenderer.flipX = true;
-        }
-        //face right
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            playerRenderer.flipX = false;
-        }
-
-        //form changes
-
         //change to medic mode
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
@@ -94,7 +79,10 @@ public class FormChange : MonoBehaviour
 
                 //change movement stats
                 moveSpeed = 7.0f;
-                jumpStart = 7.0f;
+                jumpStart = 23.0f;
+
+                //disable hydro mode script
+                gameObject.GetComponent<HydroMode>().enabled = false;
 
                 //change player sprite to medic sprite
                 playerRenderer.sprite = formSprites[0];
@@ -104,7 +92,10 @@ public class FormChange : MonoBehaviour
 
                 //change movement stats
                 moveSpeed = 8.0f;
-                jumpStart = 5.0f;
+                jumpStart = 20.0f;
+
+                //enable hydro mode script
+                gameObject.GetComponent<HydroMode>().enabled = true;
 
                 //change player sprite to hydro sprite
                 playerRenderer.sprite = formSprites[1];
@@ -113,8 +104,11 @@ public class FormChange : MonoBehaviour
             case SuitMode.Buster:
 
                 //change movement stats
-                moveSpeed = 3.0f;
-                jumpStart = 2.0f;
+                moveSpeed = 5.0f;
+                jumpStart = 16.0f;
+
+                //disable hydro mode script
+                gameObject.GetComponent<HydroMode>().enabled = false;
 
                 //change player sprite to buster sprite
                 playerRenderer.sprite = formSprites[2];

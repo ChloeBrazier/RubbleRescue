@@ -14,6 +14,9 @@ public class PlayerMovement : PlayerPhysics
     public float moveSpeed = 7;
     public float jumpStartSpeed = 7;
 
+    //field to control the direction the player is facing with right as the default
+    private bool facingRight = true;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -32,8 +35,14 @@ public class PlayerMovement : PlayerPhysics
         //get horizontal movement input
         move.x = Input.GetAxis("Horizontal");
 
+        //check for player direction using getaxis and flip player accordingly
+        if(move.x > 0 && facingRight != true || move.x < 0 && facingRight == true)
+        {
+            FlipPlayer();
+        }
+
         //debug GetAxis for better understanding of what it does
-        Debug.Log("move.x is " + move.x);
+        //Debug.Log("move.x is " + move.x);
 
         //allow the player to jump if they are on the ground
         if(Input.GetButtonDown("Jump") && isGrounded == true)
@@ -47,11 +56,25 @@ public class PlayerMovement : PlayerPhysics
             if(velocity.y > 0)
             {
                 //reduce upward velocity when the player lets go of the jump button
-                velocity.y *= 0.5f;
+                velocity.y *= 0.3f;
             }
         }
 
         //move the player horizontally based on max movespeed
         targetVelocity = move * moveSpeed;
+    }
+
+    /// <summary>
+    /// method that flips the player in the direction they are moving towards
+    /// </summary>
+    private void FlipPlayer()
+    {
+        //set the right facing bool to the opposite of its current state
+        facingRight = facingRight ? false : true;
+
+        //get local scale and reverse it on the x axis
+        Vector3 tempScale = gameObject.transform.localScale;
+        tempScale.x *= -1;
+        gameObject.transform.localScale = tempScale;
     }
 }
