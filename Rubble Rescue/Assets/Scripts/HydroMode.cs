@@ -13,10 +13,17 @@ public class HydroMode : MonoBehaviour
     private float maxWater = 100.0f;
     private float currentWater;
 
+    //field for the speed at which water fills
+    private float waterFillSpeed = 20f;
+
+    //field for player movement script
+    private PlayerPhysics playerPhysics;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        //initialize player movement script
+        playerPhysics = gameObject.GetComponent<PlayerPhysics>();
     }
 
     // OnEnable is called when this script is enabled
@@ -36,6 +43,29 @@ public class HydroMode : MonoBehaviour
         }
 
         //TODO: add water usage mechanics
+
+        //slow down time when aiming
+        if(Input.GetButton("Aim"))
+        {
+            Debug.Log("Aiming");
+
+            //gradually slow down time to desired speed
+            Time.timeScale *= 0.9f;
+            if(Time.timeScale <= 0.3f)
+            {
+                Time.timeScale = 0.3f;
+            }
+
+            Debug.Log("time scale is " + Time.timeScale);
+        }
+
+        //speed time back up
+        if(Input.GetButtonUp("Aim"))
+        {
+            //TODO: gradually speed time back up to real time
+            Time.timeScale = 1f;
+        }
+
     }
 
     void OnTriggerStay2D(Collider2D other)
@@ -43,7 +73,7 @@ public class HydroMode : MonoBehaviour
         //fill water tank if the player is touching water
         if(other.gameObject.tag == "Water" && currentWater < maxWater)
         {
-            currentWater += 10 * Time.deltaTime;
+            currentWater += waterFillSpeed * Time.deltaTime;
         }
     }
 
