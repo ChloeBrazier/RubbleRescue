@@ -16,14 +16,14 @@ public class HydroMode : MonoBehaviour
     //field for the speed at which water fills
     private float waterFillSpeed = 20f;
 
-    //field for player movement script
-    private PlayerPhysics playerPhysics;
+    //field for water prefab (testing)
+    [SerializeField]
+    private GameObject waterDrop;
 
     // Start is called before the first frame update
     void Start()
     {
-        //initialize player movement script
-        playerPhysics = gameObject.GetComponent<PlayerPhysics>();
+
     }
 
     // OnEnable is called when this script is enabled
@@ -42,12 +42,14 @@ public class HydroMode : MonoBehaviour
             currentWater = maxWater;
         }
 
-        //TODO: add water usage mechanics
-
         //slow down time when aiming
-        if(Input.GetButton("Aim"))
+        if (Input.GetButton("Aim"))
         {
-            Debug.Log("Aiming");
+            //spray water in the direction of the mouse when the ability button is pressed
+            if (Input.GetButton("Ability"))
+            {
+                SprayWater();
+            }
 
             //gradually slow down time to desired speed
             Time.timeScale *= 0.9f;
@@ -55,17 +57,20 @@ public class HydroMode : MonoBehaviour
             {
                 Time.timeScale = 0.3f;
             }
-
-            Debug.Log("time scale is " + Time.timeScale);
         }
 
-        //speed time back up
-        if(Input.GetButtonUp("Aim"))
+        //speed time back up to full speed
+        if(!Input.GetButton("Aim") && Time.timeScale < 1f)
         {
-            //TODO: gradually speed time back up to real time
-            Time.timeScale = 1f;
+            //gradually speed time back up to real time
+            Time.timeScale *= 1.1f;
+            if (Time.timeScale >= 1f)
+            {
+                Time.timeScale = 1f;
+            }
         }
 
+        //TODO: add water usage mechanics
     }
 
     void OnTriggerStay2D(Collider2D other)
@@ -83,5 +88,27 @@ public class HydroMode : MonoBehaviour
         GUI.color = Color.blue;
         GUI.skin.label.fontSize = 20;
         GUI.Label(new Rect(20, 20, 400, 200), "Water: " + string.Format("{0: 0.0}%", currentWater));
+    }
+
+    private void SprayWater()
+    {
+        //get mouse position in world space
+        Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+        //spray water if there's enough water in the tank
+        if(currentWater > 5f)
+        {
+            //spawn water drop
+            GameObject droplet = Instantiate(waterDrop, gameObject.transform.position, Quaternion.identity);
+
+            //get transform of droplet as a vector2
+            Vector2 dropletPos = new Vector2(droplet.transform.position.x, droplet.transform.position.y);
+
+            //apply force to the water drop in the direction of the mouse
+            droplet.GetComponent<Rigidbody2D>().AddForce((mousePos - dropletPos) * 5);
+
+            //subtract 5 points from current water value
+            currentWater -= 5f;
+        }
     }
 }
