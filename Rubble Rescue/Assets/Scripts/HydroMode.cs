@@ -16,6 +16,14 @@ public class HydroMode : MonoBehaviour
     //field for the speed at which water fills
     private float waterFillSpeed = 20f;
 
+    //field for water spray speed and spray bool
+    private float maxSprayCooldown = 1f;
+    private float currentSprayCooldown = 1f;
+    private bool canSpray = true;
+
+    //field for water hose usage
+    private float hoseRate = 3f;
+
     //field for water prefab (testing)
     [SerializeField]
     private GameObject waterDrop;
@@ -48,18 +56,36 @@ public class HydroMode : MonoBehaviour
             //spray water in the direction of the mouse when the ability button is pressed
             if (Input.GetButton("Ability"))
             {
-                SprayWater();
+                //spray water or decrease spray speed float
+                if(canSpray == true)
+                {
+                    //spray water
+                    SprayWater();
+
+                    //start spray cooldown
+                    canSpray = false;
+                }
             }
 
             //gradually slow down time to desired speed
+            /*
             Time.timeScale *= 0.9f;
             if(Time.timeScale <= 0.3f)
             {
                 Time.timeScale = 0.3f;
             }
+            */
         }
 
+        //check if the player can't spray water
+        if(canSpray == false)
+        {
+            //decrement spray cooldown
+            currentSprayCooldown -= 0.2f;
+        }
+        
         //speed time back up to full speed
+        /*
         if(!Input.GetButton("Aim") && Time.timeScale < 1f)
         {
             //gradually speed time back up to real time
@@ -68,6 +94,17 @@ public class HydroMode : MonoBehaviour
             {
                 Time.timeScale = 1f;
             }
+        }
+        */
+
+        //check if spray cooldown has been decremented to zero
+        if (currentSprayCooldown < 0f)
+        {
+            //set canSpray to true
+            canSpray = true;
+
+            //reset cooldown float
+            currentSprayCooldown = maxSprayCooldown;
         }
 
         //TODO: add water usage mechanics
@@ -96,7 +133,7 @@ public class HydroMode : MonoBehaviour
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
         //spray water if there's enough water in the tank
-        if(currentWater > 5f)
+        if(currentWater > hoseRate)
         {
             //spawn water drop
             GameObject droplet = Instantiate(waterDrop, gameObject.transform.position, Quaternion.identity);
@@ -105,10 +142,10 @@ public class HydroMode : MonoBehaviour
             Vector2 dropletPos = new Vector2(droplet.transform.position.x, droplet.transform.position.y);
 
             //apply force to the water drop in the direction of the mouse
-            droplet.GetComponent<Rigidbody2D>().AddForce((mousePos - dropletPos) * 5);
+            droplet.GetComponent<Rigidbody2D>().AddForce((mousePos - dropletPos) * 100);
 
             //subtract 5 points from current water value
-            currentWater -= 5f;
+            currentWater -= hoseRate;
         }
     }
 }

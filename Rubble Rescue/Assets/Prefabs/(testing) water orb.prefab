@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6416007593219343043}
   - component: {fileID: 7614592564075963068}
   - component: {fileID: -3065676677096863910}
+  - component: {fileID: 5017381442206304165}
   m_Layer: 0
   m_Name: (testing) water orb
   m_TagString: Untagged
@@ -116,3 +117,15 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &5017381442206304165
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6416007593219343041}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae02c3083646068419335ba898e84580, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
