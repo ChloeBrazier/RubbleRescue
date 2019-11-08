@@ -81,8 +81,10 @@ public class FormChange : MonoBehaviour
                 moveSpeed = 7.0f;
                 jumpStart = 23.0f;
 
-                //disable hydro mode script
+                //disable hydro mode (and any other suit mode scripts) script
                 gameObject.GetComponent<HydroMode>().enabled = false;
+
+                //enable medic scripts
 
                 //change player sprite to medic sprite
                 playerRenderer.sprite = formSprites[0];
@@ -97,7 +99,7 @@ public class FormChange : MonoBehaviour
                 //enable hydro mode script
                 gameObject.GetComponent<HydroMode>().enabled = true;
 
-                //change player sprite to hydro sprite
+                //change player sprite to hydro  sprite
                 playerRenderer.sprite = formSprites[1];
                 break;
 
@@ -107,8 +109,10 @@ public class FormChange : MonoBehaviour
                 moveSpeed = 5.0f;
                 jumpStart = 16.0f;
 
-                //disable hydro mode script
+                //disable hydro mode (and any other suit mode scripts) script
                 gameObject.GetComponent<HydroMode>().enabled = false;
+
+                //enable buster scripts
 
                 //change player sprite to buster sprite
                 playerRenderer.sprite = formSprites[2];
@@ -126,7 +130,7 @@ public class FormChange : MonoBehaviour
     /// <param name="jumpStart"></param>
     private void SetStats(float moveSpeed, float jumpStart)
     {
-        gameObject.GetComponent<PlayerMovement>().moveSpeed = moveSpeed;
-        gameObject.GetComponent<PlayerMovement>().jumpStartSpeed = jumpStart;
+        PlayerMovement.instance.moveSpeed = moveSpeed;
+        PlayerMovement.instance.jumpStartSpeed = jumpStart;
     }
 }

@@ -12,7 +12,8 @@ public class WaterSplash : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        //immediately destroy this object on a timer
+        Destroy(gameObject, 5f);
     }
 
     // Update is called once per frame

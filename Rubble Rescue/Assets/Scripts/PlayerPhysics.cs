@@ -95,7 +95,7 @@ public class PlayerPhysics : MonoBehaviour
         //change the player's position based on velocity
         Vector2 position = velocity * Time.deltaTime;
 
-        //store movement along the ground (vector perpencidular to ground normal)
+        //store movement along the ground (vector perpendicular to ground normal)
         Vector2 groundMovement = new Vector2(groundNormal.y, -groundNormal.x);
 
         //move player along the ground based on the ground movement vector

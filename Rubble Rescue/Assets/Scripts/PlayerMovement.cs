@@ -9,7 +9,9 @@ using UnityEngine;
 
 public class PlayerMovement : PlayerPhysics
 {
-    
+    //make this class a static instance
+    public static PlayerMovement instance;
+
     //fields for max movespeed and jump takeoff speed
     public float moveSpeed = 7;
     public float jumpStartSpeed = 7;
@@ -20,6 +22,16 @@ public class PlayerMovement : PlayerPhysics
     // Start is called before the first frame update
     void Start()
     {
+        //initialize static instance
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(this);
+        }
+
         //initialize player position
         gameObject.transform.position = Vector2.zero;
     }
@@ -76,5 +88,14 @@ public class PlayerMovement : PlayerPhysics
         Vector3 tempScale = gameObject.transform.localScale;
         tempScale.x *= -1;
         gameObject.transform.localScale = tempScale;
+    }
+
+    /// <summary>
+    /// applies an upward force to the player
+    /// </summary>
+    public void MoveUpward(float upwardForce)
+    {
+        //apply the passed-in force to the player
+        velocity.y = upwardForce;
     }
 }

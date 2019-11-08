@@ -16,10 +16,11 @@ public class HydroMode : MonoBehaviour
     //field for the speed at which water fills
     private float waterFillSpeed = 20f;
 
-    //field for water spray speed and spray bool
+    //fields for water spray speed and spray bool
     private float maxSprayCooldown = 1f;
     private float currentSprayCooldown = 1f;
     private bool canSpray = true;
+    private float sprayForce = 100f;
 
     //field for water hose usage
     private float hoseRate = 3f;
@@ -142,7 +143,7 @@ public class HydroMode : MonoBehaviour
             Vector2 dropletPos = new Vector2(droplet.transform.position.x, droplet.transform.position.y);
 
             //apply force to the water drop in the direction of the mouse
-            droplet.GetComponent<Rigidbody2D>().AddForce((mousePos - dropletPos) * 100);
+            droplet.GetComponent<Rigidbody2D>().AddForce((mousePos - dropletPos) * sprayForce);
 
             //subtract 5 points from current water value
             currentWater -= hoseRate;
