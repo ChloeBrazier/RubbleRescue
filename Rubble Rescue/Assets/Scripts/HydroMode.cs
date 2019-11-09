@@ -58,13 +58,15 @@ public class HydroMode : MonoBehaviour
             //move the player upward and decrease current water by 25 percent
             if(UseWater(jumpRate))
             {
-                PlayerMovement.instance.MoveUpward(100);
+                PlayerMovement.instance.MoveUpward(30f);
             }
         }
 
         //slow down time when aiming
-        if (Input.GetButton("Aim"))
+        if (Input.GetButton("Aim") && PlayerMovement.instance.isGrounded == true)
         {
+            //TODO: make arm move when aiming
+
             //spray water in the direction of the mouse when the ability button is pressed
             if (Input.GetButton("Ability"))
             {
