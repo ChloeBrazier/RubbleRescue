@@ -60,6 +60,8 @@ public class HydroMode : MonoBehaviour
             {
                 PlayerMovement.instance.MoveUpward(30f);
             }
+
+            //TODO: animation event that spawns water when the player does a hydro jump
         }
 
         //slow down time when aiming

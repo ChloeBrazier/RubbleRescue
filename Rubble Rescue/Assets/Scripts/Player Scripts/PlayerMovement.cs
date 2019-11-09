@@ -33,7 +33,7 @@ public class PlayerMovement : PlayerPhysics
         }
 
         //initialize player position
-        gameObject.transform.position = Vector2.zero;
+        gameObject.transform.position = transform.position;
     }
 
     /// <summary>

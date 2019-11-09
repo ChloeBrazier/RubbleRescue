@@ -20,13 +20,13 @@ public class PlayerPhysics : MonoBehaviour
     //protected fields for movement input from outside classes
     protected Vector2 targetVelocity;
 
-    //protected fields to check if the player is grounded
+    //fields to check if the player is grounded
     public bool isGrounded;
     protected Vector2 groundNormal;
 
-    //protected fields for player movement
+    //fields for player movement
     protected Rigidbody2D playerBody;
-    protected Vector2 velocity;
+    public Vector2 velocity;
     protected ContactFilter2D contactFilter;
     protected RaycastHit2D[] hitBuffer;
     protected List<RaycastHit2D> bufferList;
