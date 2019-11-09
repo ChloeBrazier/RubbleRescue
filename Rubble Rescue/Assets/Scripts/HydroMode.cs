@@ -24,7 +24,7 @@ public class HydroMode : MonoBehaviour
 
     //fields for water ability usage
     private float hoseRate = 3f;
-    private float jumpRate = 25f;
+    private float jumpRate = 30f;
 
     //field for water prefab (testing)
     [SerializeField]
@@ -120,8 +120,6 @@ public class HydroMode : MonoBehaviour
             //reset cooldown float
             currentSprayCooldown = maxSprayCooldown;
         }
-
-        //TODO: add water usage mechanics
     }
 
     void OnTriggerStay2D(Collider2D other)
