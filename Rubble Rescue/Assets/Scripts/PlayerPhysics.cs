@@ -21,7 +21,7 @@ public class PlayerPhysics : MonoBehaviour
     protected Vector2 targetVelocity;
 
     //protected fields to check if the player is grounded
-    protected bool isGrounded;
+    public bool isGrounded;
     protected Vector2 groundNormal;
 
     //protected fields for player movement

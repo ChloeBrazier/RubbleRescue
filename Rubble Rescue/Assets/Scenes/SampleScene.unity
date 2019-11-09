@@ -498,6 +498,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gravityScale: 0
   minGroundNormalY: 0
+  isGrounded: 0
   moveSpeed: 7
   jumpStartSpeed: 7
 --- !u!61 &312086843

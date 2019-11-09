@@ -22,8 +22,9 @@ public class HydroMode : MonoBehaviour
     private bool canSpray = true;
     private float sprayForce = 100f;
 
-    //field for water hose usage
+    //fields for water ability usage
     private float hoseRate = 3f;
+    private float jumpRate = 25f;
 
     //field for water prefab (testing)
     [SerializeField]
@@ -49,6 +50,16 @@ public class HydroMode : MonoBehaviour
         if(currentWater > maxWater)
         {
             currentWater = maxWater;
+        }
+
+        //check if the player is airborne and presses the ability button
+        if(PlayerMovement.instance.isGrounded == false && Input.GetButtonDown("Ability"))
+        {
+            //move the player upward and decrease current water by 25 percent
+            if(UseWater(jumpRate))
+            {
+                PlayerMovement.instance.MoveUpward(100);
+            }
         }
 
         //slow down time when aiming
@@ -78,13 +89,6 @@ public class HydroMode : MonoBehaviour
             */
         }
 
-        //check if the player can't spray water
-        if(canSpray == false)
-        {
-            //decrement spray cooldown
-            currentSprayCooldown -= 0.2f;
-        }
-        
         //speed time back up to full speed
         /*
         if(!Input.GetButton("Aim") && Time.timeScale < 1f)
@@ -98,6 +102,13 @@ public class HydroMode : MonoBehaviour
         }
         */
 
+        //check if the player can't spray water
+        if (canSpray == false)
+        {
+            //decrement spray cooldown
+            currentSprayCooldown -= 0.2f;
+        }
+        
         //check if spray cooldown has been decremented to zero
         if (currentSprayCooldown < 0f)
         {
@@ -113,6 +124,7 @@ public class HydroMode : MonoBehaviour
 
     void OnTriggerStay2D(Collider2D other)
     {
+        //TODO: AVOID TAG USAGE
         //fill water tank if the player is touching water
         if(other.gameObject.tag == "Water" && currentWater < maxWater)
         {
@@ -134,7 +146,7 @@ public class HydroMode : MonoBehaviour
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
         //spray water if there's enough water in the tank
-        if(currentWater > hoseRate)
+        if(UseWater(hoseRate))
         {
             //spawn water drop
             GameObject droplet = Instantiate(waterDrop, gameObject.transform.position, Quaternion.identity);
@@ -144,9 +156,27 @@ public class HydroMode : MonoBehaviour
 
             //apply force to the water drop in the direction of the mouse
             droplet.GetComponent<Rigidbody2D>().AddForce((mousePos - dropletPos) * sprayForce);
-
-            //subtract 5 points from current water value
-            currentWater -= hoseRate;
         }
+    }
+
+    /// <summary>
+    /// method that depletes the water tank when a water move is used
+    /// </summary>
+    /// <param name="usageRate">the amount of water to subtract from current water</param>
+    /// <returns>if there's enough water in the tank</returns>
+    private bool UseWater(float usageRate)
+    {
+        //check if current water is greater than usage rate for the water move
+        if(currentWater > usageRate)
+        {
+            //subtract the usage rate amount from current water
+            currentWater -= usageRate;
+
+            //return true
+            return true;
+        }
+
+        //return false if the above is false
+        return false;
     }
 }

@@ -96,6 +96,6 @@ public class PlayerMovement : PlayerPhysics
     public void MoveUpward(float upwardForce)
     {
         //apply the passed-in force to the player
-        velocity.y = upwardForce;
+        velocity.y += upwardForce;
     }
 }
