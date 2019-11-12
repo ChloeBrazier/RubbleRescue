@@ -19,28 +19,18 @@ public class JumpablePlatform : MonoBehaviour
     void Update()
     {
         //TODO: MAKE THIS WORK
-    }
 
-    //activates when a collision occurs with the object
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        //TODO: replace tag usage
-        //check if colliding with the player
-        if (collision.gameObject.tag == "Player")
+        //check if player is above or below the platform
+        if (PlayerManager.instance.footPos.y > transform.position.y)
         {
-            //check if player's y velocity is positive
-            if (PlayerMovement.instance.velocity.y >= 0)
-            {
-                //disable this object's collider
-                GetComponent<BoxCollider2D>().enabled = false;
-            }
+            Debug.Log("platform enabled");
+            //enable collider on this object
+            gameObject.GetComponent<BoxCollider2D>().enabled = true;
         }
-    }
-
-    //activates after a collision with this object
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        //re-enable this object's collider when a collision is over
-        GetComponent<BoxCollider2D>().enabled = true;
+        else
+        {
+            //disable collider if player is below the platform
+            gameObject.GetComponent<BoxCollider2D>().enabled = false;
+        }
     }
 }

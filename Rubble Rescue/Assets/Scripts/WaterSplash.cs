@@ -30,7 +30,7 @@ public class WaterSplash : MonoBehaviour
         //TODO: replace find gameobject with tag use in water splash
         //TODO: Reduce usage of tags for detecting collision with certain objects
         //destroy this object when it touches a surface
-        if(collision.gameObject.tag != "Player" && 
+        if(collision.gameObject != PlayerManager.instance.player && 
             collision.gameObject.tag != "Water Particle" &&
             collision.gameObject.tag != "Water")
         {

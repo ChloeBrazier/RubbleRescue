@@ -40,7 +40,7 @@ public class HydroMode : MonoBehaviour
     private void OnEnable()
     {
         //reset water tank to zero
-        currentWater = 0f;
+        //currentWater = 0f;
     }
 
     // Update is called once per frame
@@ -126,12 +126,17 @@ public class HydroMode : MonoBehaviour
 
     void OnTriggerStay2D(Collider2D other)
     {
-        //TODO: AVOID TAG USAGE
-        //fill water tank if the player is touching water
-        if(other.gameObject.tag == "Water" && currentWater < maxWater)
+        //make sure the player is in hydro mode before filling the tank
+        if(this.isActiveAndEnabled)
         {
-            currentWater += waterFillSpeed * Time.deltaTime;
+            //TODO: AVOID TAG USAGE
+            //fill water tank if the player is touching water
+            if (other.gameObject.tag == "Water" && currentWater < maxWater)
+            {
+                currentWater += waterFillSpeed * Time.deltaTime;
+            }
         }
+       
     }
 
     private void OnGUI()
