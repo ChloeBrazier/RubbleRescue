@@ -18,8 +18,6 @@ public class JumpablePlatform : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //TODO: MAKE THIS WORK
-
         //check if player is above or below the platform
         if (PlayerManager.instance.footPos.y > transform.position.y)
         {
